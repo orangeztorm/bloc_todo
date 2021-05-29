@@ -22,9 +22,9 @@ class Routes {
                 child: TodoScreen()
             ));
       case EDIT_TODO_ROUTE:
-        return MaterialPageRoute(builder: (_) => AddTodoScreen());
-      case ADD_TODO_ROUTE:
         return MaterialPageRoute(builder: (_) => EditTodoScreen());
+      case ADD_TODO_ROUTE:
+        return MaterialPageRoute(builder: (_) => AddTodoScreen());
       default:
         return null;
     }
