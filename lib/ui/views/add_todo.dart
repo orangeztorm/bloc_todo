@@ -2,6 +2,7 @@ import 'package:bloc_todo/cubit/index.dart';
 import 'package:bloc_todo/ui/widgets/custom_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toast/toast.dart';
 
 class AddTodoScreen extends StatelessWidget {
   AddTodoScreen({Key key}) : super(key: key);
@@ -13,13 +14,14 @@ class AddTodoScreen extends StatelessWidget {
     return SimplePage(
       appTitle: 'Add Todo',
       body: BlocListener<AddTodoCubit, AddTodoState>(
-        listener: (context, state){
-          if(state is TodoAdded){
+        listener: (context, state) {
+          if (state is TodoAdded) {
             Navigator.pop(context);
-            return;
-          }
-          else if(state is AddTodoError){
-
+          } else if (state is AddTodoError) {
+            Toast.show(state.error, context,
+                duration: 3,
+                backgroundColor: Colors.red,
+                gravity: Toast.CENTER);
           }
         },
         child: Container(
@@ -59,16 +61,15 @@ class AddTodoScreen extends StatelessWidget {
           color: Colors.black, borderRadius: BorderRadius.circular(8)),
       child: Center(
         child: BlocBuilder<AddTodoCubit, AddTodoState>(
-            builder: (context, state) {
+          builder: (context, state) {
+            if (state is AddingTodo) return CircularProgressIndicator();
 
-              if(state is AddingTodo)
-                return CircularProgressIndicator();
-
-              return Text(
-                'Add Todo',
-                style: TextStyle(color: Colors.white),
-              );
-            },),
+            return Text(
+              'Add Todo',
+              style: TextStyle(color: Colors.white),
+            );
+          },
+        ),
       ),
     );
   }

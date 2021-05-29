@@ -34,4 +34,24 @@ class NetworkService {
       return null;
     }
   }
+
+  Future<bool> deleteTodo(int id)async {
+    try{
+      final response = await delete(Uri.parse(baseUrl + "/todos/$id"));
+      return true;
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  Future<bool> updateTodoMessage(Map<String, dynamic> todoObj, int id) async {
+    try{
+      await patch(Uri.parse(baseUrl + "/todos/$id"));
+      return true;
+    }catch(e){
+      print(e);
+      return false;
+    }
+  }
 }

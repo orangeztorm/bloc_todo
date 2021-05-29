@@ -7,10 +7,10 @@ import '../ui/views/index.dart';
 import 'index.dart';
 
 class Routes {
-
   Repository repository;
   TodoCubit todoCubit;
-  Routes(){
+
+  Routes() {
     repository = Repository(NetworkService());
     todoCubit = TodoCubit(repository: repository);
   }
@@ -19,18 +19,23 @@ class Routes {
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(
-            builder: (_) => BlocProvider.value(
-              value: todoCubit,
-                child: TodoScreen()
-            ));
+            builder: (_) =>
+                BlocProvider.value(value: todoCubit, child: TodoScreen()));
       case EDIT_TODO_ROUTE:
-        return MaterialPageRoute(builder: (_) => EditTodoScreen());
+        final todo = settings.arguments as Todo;
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                create: (_) =>
+                    EditTodoCubit(repository: repository, todoCubit: todoCubit),
+                child: EditTodoScreen(
+                  todo: todo,
+                )));
       case ADD_TODO_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-                create: (_) => AddTodoCubit(repository: repository, todoCubit: todoCubit),
-                child: AddTodoScreen()
-            ));
+                create: (_) =>
+                    AddTodoCubit(repository: repository, todoCubit: todoCubit),
+                child: AddTodoScreen()));
       default:
         return null;
     }
